@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<install>
+	<packageList>
+		<!-- Dev languages -->
+		<package name="openjdk-7-jdk"/>
+		<package name="gcc"/>
+	
+		<!-- Dev tools	-->
+		<package name="git"/>
+		<package name="guake"/>
+	
+		<!-- Web -->
+		<package name="chromium"/>
+		<package name="firefox"/>
+		<!-- Multimedia -->
+		
+		<package name="vlc"/>
+		<package name="xbmc"/>
+	<packageList>
+	
+	<postInstall>
+		<!-- Git configuration -->
+		<script cmd='git --global user.name="Vincent NORGUET"'/>
+		<script cmd='git --global user.email="vincent.norguet@gmail.com"'/>
+	<postInstallCommands>
+<install>
+
