@@ -6,13 +6,13 @@ class Apt
 	end
 	
 	def install
-		puts "installing..."
+		Log::logger.info( "installing packages from xml...")
 		cmd = 'apt-get install '.packageList.map{|pack| pack.to_s}.join(" ")
 		exec(cmd)
 	end
 
 	def upgrade
-		puts "updating..."
+		Log::logger.error( "updating system packages...")
 		cmd = "apt-get update && apt-get dist-upgrade -y && apt-get autoclean"
 		exec(cmd)
 	end

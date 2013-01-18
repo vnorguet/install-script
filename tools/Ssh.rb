@@ -1,7 +1,8 @@
-require "net/ssh"
-require "nokogiri"
+require 'net/ssh'
+require 'nokogiri'
 
-class Ssh
+class Ssh 
+	include Log
 	def update
 		output =""
 		loadFromXml.each do |host|
@@ -9,17 +10,19 @@ class Ssh
 				ssh = Net::SSH::start(host, 'vincent',:config => '/home/vincent/.ssh/config') do |conn|
 					output = conn.exec! "echo 'password' | sudo apt-get update && sudo apt-get dist-upgrade -y && sudo apt-get autoclean"
 				end
-				Logger.debug(host.to_s+" updated ")
-			rescue Timeout::Error
-			    puts host.to_s+"  Timed out"
+			rescue Timeout::Error || Errno::ETIMEDOUT
+			    Log::logger.error( host.to_s+"  Timed out")
 			rescue Errno::EHOSTUNREACH
-			    puts host.to_s+"  Host unreachable"
+			    Log::logger.error( host.to_s+"  Host unreachable")
 			rescue Errno::ECONNREFUSED
-			    puts host.to_s+"  Connection refused"
+			    Log::logger.error( host.to_s+"  Connection refused")
+			rescue Errno::EINVAL
+				Log::logger.error( hosts.to_s+"  No internet connection")
 			rescue Net::SSH::AuthenticationFailed
-			    puts host.to_s+"  Authentication failure"
+			    Log::logger.error( host.to_s+"  Authentication failure")
 			rescue SocketError
-				puts host.to_s+"  Hostname problem"
+				Log::logger.error( host.to_s+"  Hostname problem")
+
 			end	
 		end
 	end
@@ -44,7 +47,7 @@ class Ssh
 					servers.push(node.attribute("name"))
 				end
 				file.close
-			else puts "File doesn't exists"
+			else Log::logger.error( " Servers' xml conf file doesn't exists")
 		end
 		return servers
 	end

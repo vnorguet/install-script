@@ -4,7 +4,7 @@ require 'logger'
 #SSH
 require 'nokogiri'
 require 'net/ssh'
-
+require './Log.rb'
 
 # => Dynamic loader
 Dir["./tools/*.rb"].each do |file| 
