@@ -1,5 +1,5 @@
 class Apt
-	attr_accessible packageList
+#	attr_accessible packageList
 	
 	def loadFromXml (xmlFilePath)
 		

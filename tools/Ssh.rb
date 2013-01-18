@@ -9,7 +9,7 @@ class Ssh
 				ssh = Net::SSH::start(host, 'vincent',:config => '/home/vincent/.ssh/config') do |conn|
 					output = conn.exec! "echo 'password' | sudo apt-get update && sudo apt-get dist-upgrade -y && sudo apt-get autoclean"
 				end
-				puts host.to_s+" updated "
+				Logger.debug(host.to_s+" updated ")
 			rescue Timeout::Error
 			    puts host.to_s+"  Timed out"
 			rescue Errno::EHOSTUNREACH
@@ -34,7 +34,7 @@ class Ssh
 		end
 	end
 
-	def loadFromXml(filePath ="../conf/servers.xml")
+	def loadFromXml(filePath ="/home/vincent/git/install-script/conf/servers.xml")
 		servers = Array.new
 		if (File.exists?(filePath))
 			then
@@ -44,11 +44,12 @@ class Ssh
 					servers.push(node.attribute("name"))
 				end
 				file.close
+			else puts "File doesn't exists"
 		end
 		return servers
 	end
 
 end
 
-ssh = Ssh.new
-ssh.update
+#ssh = Ssh.new
+#ssh.update
